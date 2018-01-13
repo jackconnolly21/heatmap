@@ -31,11 +31,14 @@ def drawHeatMap(locations, XSCALE=10, YSCALE=5):
         pygame.draw.line(screen,color,start,end)
 
     pygame.display.update()
+    pygame.image.save(screen, 'output.bmp')
+    pygame.display.quit()
+    pygame.quit()
 
-    while(1):
-        for e in pygame.event.get():
-            if e.type == QUIT or (e.type == KEYUP and e.key == K_ESCAPE):
-                sys.exit("Leaving because you requested it.")
+    # while(1):
+    #     for e in pygame.event.get():
+    #         if e.type == QUIT or (e.type == KEYUP and e.key == K_ESCAPE):
+    #             sys.exit("Leaving because you requested it.")
 
 def scaleUp(list, scaleX, scaleY):
     newlist = []
