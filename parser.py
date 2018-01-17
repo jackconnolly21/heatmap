@@ -2,15 +2,15 @@ import csv
 
 class Parser:
 
-    def __init__(self, filename='CU-PENN.dvw'):
+    def __init__(self, filename):
         self.fileSections = self.readFile(filename)
         self.homeTeam, self.awayTeam = self.getHomeAndAway()
         self.homeRoster = self.readRoster(self.fileSections['[3PLAYERS-H]'])
         self.awayRoster = self.readRoster(self.fileSections['[3PLAYERS-V]'])
 
-    def readFile(self, filename='CU-PENN.dvw'):
+    def readFile(self, filename):
         fileSections = {}
-        with open('data/' + filename, 'rb') as dvwfile:
+        with open(filename, 'rb') as dvwfile:
             reader = csv.reader(dvwfile, delimiter=';', quotechar='|')
             currentSection = ''
             for row in reader:
@@ -50,7 +50,7 @@ class Parser:
             comboList[code] = (name, location)
         return comboList
 
-    def getAttackInfo(self, team, player, attacks, list):
+    def getAttackInfo(self, team, player, attacks, list, onlyKills=False):
 
         gameInfo = self.fileSections['[3SCOUT]']
 
@@ -71,8 +71,9 @@ class Parser:
                     start = event[4]
                     end = event[6]
                     rating = info[5]
-                    arc = ((int(start[:2]), int(start[2:])), (int(end[:2]), int(end[2:])))
-                    list.append((arc, rating))
+                    if not onlyKills or rating == "#":
+                        arc = ((100-int(start[2:]), int(start[:2])), (100-int(end[2:]), int(end[:2])))
+                        list.append((arc, rating))
 
         return list
 

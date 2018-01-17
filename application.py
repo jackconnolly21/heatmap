@@ -40,16 +40,20 @@ def heatmap():
         team = int(request.form.get("teamname"))
         player = int(request.form.get("player"))
         attacks = request.form.get("attacks").split(",")
+        if request.form.get("kills"):
+            onlyKills = True
+        else:
+            onlyKills = False
 
         files = []
-        for f in os.listdir(os.getcwd() + '/data'):
+        for f in os.listdir(os.getcwd() + '/data/testdata'):
             if f.endswith('.dvw'):
                 files.append(f)
 
         locations = []
         for fileName in files:
             parser = Parser(fileName)
-            locations = parser.getAttackInfo(team, player, attacks, locations)
+            locations = parser.getAttackInfo(team, player, attacks, locations, onlyKills)
 
         heatMap.drawHeatMap(locations)
 

@@ -1,10 +1,11 @@
-import pygame, sys, os
+import pygame, sys, os, time
 from parser import Parser
 from optparse import OptionParser
 from pygame.locals import *
+from timeit import default_timer as timer
 
-def drawHeatMap(locations, XSCALE=10, YSCALE=5):
-    pygame.init()
+def drawHeatMap(locations, XSCALE=4, YSCALE=8):
+    pygame.display.init()
     screen = pygame.display.set_mode([100*XSCALE, 100*YSCALE])
     # caption = "HeatMap: #" + str(info['number']) + " " + info['name'] + " (" + info['team'] + ")"
     pygame.display.set_caption('Volleymetrics HeatMap')
@@ -20,7 +21,7 @@ def drawHeatMap(locations, XSCALE=10, YSCALE=5):
     pygame.draw.lines(screen, white, True, scaleUp(outerBoundary, XSCALE, YSCALE), 3)
     pygame.draw.lines(screen, white, True, scaleUp(courtBoundary, XSCALE, YSCALE), 3)
     # Draw net
-    pygame.draw.line(screen, white, (50*XSCALE, 10*YSCALE), (50*XSCALE, 90*YSCALE), 7)
+    pygame.draw.line(screen, white, (10*XSCALE, 50*YSCALE), (90*XSCALE, 50*YSCALE), 7)
 
     for location in locations:
         startx, starty = location[0][0]
@@ -29,16 +30,20 @@ def drawHeatMap(locations, XSCALE=10, YSCALE=5):
         end = (endx*XSCALE, endy*YSCALE)
         color = colorByRating(location[1])
         pygame.draw.line(screen,color,start,end)
+        pygame.draw.circle(screen,color,end,3)
 
     pygame.display.update()
-    pygame.image.save(screen, 'output.bmp')
-    pygame.display.quit()
-    pygame.quit()
+    pygame.image.save(screen, 'templates/images/output.bmp')
 
-    # while(1):
-    #     for e in pygame.event.get():
-    #         if e.type == QUIT or (e.type == KEYUP and e.key == K_ESCAPE):
-    #             sys.exit("Leaving because you requested it.")
+    # pygame.display.quit()
+    # pygame.quit()
+
+    running = True
+    while(running):
+        for e in pygame.event.get():
+            if e.type == QUIT or (e.type == KEYUP and e.key == K_ESCAPE):
+                pygame.display.iconify()
+                running = False
 
 def scaleUp(list, scaleX, scaleY):
     newlist = []
@@ -50,12 +55,13 @@ def colorByRating(rating):
     white = 255, 240, 200
     red = 255, 0, 0
     green = 0, 255, 0
+    yellow = 255, 255, 0
     if rating == '#':
         return green
     elif rating == '=':
         return red
     else:
-        return white
+        return yellow
 
 def readCommands(argv):
     parser = OptionParser()
@@ -84,10 +90,11 @@ if __name__ == '__main__':
 
     # Allow option of "all" files being passed in
     files = []
+    folder = 'data/ivy2017/'
     if options.fileNames == 'all':
-        for f in os.listdir(os.getcwd() + '/data'):
+        for f in os.listdir(os.getcwd() + '/' + folder):
             if f.endswith('.dvw'):
-                files.append(f)
+                files.append(folder + f)
     elif options.fileNames == None:
         print "Use -f option to pass in .dvw file(s) to analyze."
     else:

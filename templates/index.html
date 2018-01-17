@@ -6,21 +6,43 @@
 
 {% block main %}
 
+    <div>
+      <h1 align="center">Create HeatMap</h1>
+    </div>
+
+    <br>
+
     <div class="container">
       <form action="{{ url_for('heatmap') }}" data-toggle="validator" id="heatmap" method="post">
-          <div class="form-group">
-              <input class="form-control" name="teamname" id="teamname" placeholder="Team" required type="text"/>
+          <div class="form-group row">
+              <label for="teamname" class="col-sm-2 col-form-label">Team Number</label>
+              <div class="col-sm-10">
+                <input class="form-control" name="teamname" id="teamname" placeholder="Team" required type="text"/>
+              </div>
               <div class="help-block with-errors"></div>
           </div>
-          <div class="form-group">
-              <input class="form-control" name="player" id="player" placeholder="Player Number" required type="number"/>
+          <div class="form-group row">
+              <label for="player" class="col-sm-2 col-form-label">Player Number</label>
+              <div class="col-sm-10">
+                <input class="form-control" name="player" id="player" placeholder="Player Number" required type="number"/>
+              </div>
               <div class="help-block with-errors"></div>
           </div>
-          <div class="form-group">
-              <input class="form-control" placeholder="Attack Combo" name="attacks" id="attacks" type="text"/>
+          <div class="form-group row">
+              <label for="attacks" class="col-sm-2 col-form-label">Attack Combos</label>
+              <div class="col-sm-10">
+                <input class="form-control" placeholder="Attack Combo" name="attacks" id="attacks" required type="text"/>
+              </div>
               <div class="help-block with-errors"></div>
           </div>
-          <div class="form-group">
+          <div></div>
+          <div class="form-group row">
+            <div class="col-sm-2"><b>Only Show Kills</b></div>
+            <div class="checkbox col-sm-10">
+                <label><input type="checkbox" value="True" name="kills" id="kills">Only Kills</label>
+            </div>
+          </div>
+          <div class="form-group row">
               <button class="btn btn-default" type="submit">Create HeatMap</button>
           </div>
       </form>
