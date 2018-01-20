@@ -3,8 +3,9 @@ from parser import Parser
 from optparse import OptionParser
 from pygame.locals import *
 from timeit import default_timer as timer
+import heatmap as hm
 
-def drawHeatMap(locations, XSCALE=4, YSCALE=8):
+def drawArcs(locations, XSCALE=4, YSCALE=8):
     pygame.display.init()
     screen = pygame.display.set_mode([100*XSCALE, 100*YSCALE])
     # caption = "HeatMap: #" + str(info['number']) + " " + info['name'] + " (" + info['team'] + ")"
@@ -45,6 +46,15 @@ def drawHeatMap(locations, XSCALE=4, YSCALE=8):
                 pygame.display.iconify()
                 running = False
 
+def drawHeatMap(locations, XSCALE=4, YSCALE=8):
+    ends = []
+    for location in locations:
+        endx, endy = location[0][1]
+        end = (endx*XSCALE, endy*YSCALE)
+        ends.append(end)
+    h = hm.Heatmap()
+    h.heatmap(ends).save("heatmap.png")
+
 def scaleUp(list, scaleX, scaleY):
     newlist = []
     for item in list:
@@ -65,14 +75,15 @@ def colorByRating(rating):
 
 def readCommands(argv):
     parser = OptionParser()
-    parser.add_option("-f", "--files", dest="fileNames",
-                  help="draw heat map from FILES (comma separated list)", metavar="FILES")
+    parser.add_option("-f", "--folder", dest="folderName",
+                  help="draw heat map from folder", default="testdata")
     parser.add_option("-n", "--number", dest="playerNumber",
                     help="playerNumber to analyze")
     parser.add_option("-t", "--team", dest="teamNumber",
                     help="Volleymetrics teamNumber for team the player is on")
     parser.add_option("-a", "--attacks", dest="attackCombos",
-                    help="attackCombos to search for and display")
+                    help="attackCombos to search for and display", default="all")
+    parser.add_option("-k", action="store_true", dest="onlyKills", default=False)
     (options, args) = parser.parse_args(argv)
     return options
 
@@ -90,19 +101,14 @@ if __name__ == '__main__':
 
     # Allow option of "all" files being passed in
     files = []
-    folder = 'data/ivy2017/'
-    if options.fileNames == 'all':
-        for f in os.listdir(os.getcwd() + '/' + folder):
-            if f.endswith('.dvw'):
-                files.append(folder + f)
-    elif options.fileNames == None:
-        print "Use -f option to pass in .dvw file(s) to analyze."
-    else:
-        files = options.fileNames.split(',')
+    folder = 'data/' + options.folderName + '/'
+    for f in os.listdir(os.getcwd() + '/' + folder):
+        if f.endswith('.dvw'):
+            files.append(folder + f)
 
     locations = []
     for fileName in files:
         parser = Parser(fileName)
-        locations = parser.getAttackInfo(team, player, attacks, locations)
+        locations = parser.getAttackInfo(team, player, attacks, locations, options.onlyKills)
 
-    drawHeatMap(locations)
+    drawArcs(locations)

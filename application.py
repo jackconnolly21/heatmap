@@ -63,7 +63,7 @@ def heatmap():
             parser = Parser(fileName)
             locations = parser.getAttackInfo(team, player, attacks, locations, onlyKills)
 
-        heatMap.drawHeatMap(locations)
+        heatMap.drawArcs(locations)
 
         return render_template("heatmap.html")
 

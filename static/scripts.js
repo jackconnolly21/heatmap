@@ -1,7 +1,6 @@
 $(function() {
 
   // configure typeahead
-  alert("in js!");
   $("#teamname").typeahead({
       highlight: false,
       minLength: 1
@@ -19,11 +18,20 @@ $(function() {
           )
       }
   });
+
+  $("#teamname").on("typeahead:selected", function(eventObject, suggestion, name) {
+
+      // use info
+      number = int(suggestion.vm_num)
+      teamname = suggestion.name
+
+      $("#teamname").val(number)
+
+  });
 });
 
 function teams(query, syncResults, asyncResults)
 {
-    alert("In teams!!")
     // get places matching query (asynchronously)
     var parameters = {
         t: query

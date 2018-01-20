@@ -6,7 +6,7 @@
 
 {% block main %}
 
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='scripts.js') }}"></script> -->
 
     <div>
       <h1 align="center">Create HeatMap</h1>
@@ -40,9 +40,8 @@
           <div class="form-group row">
               <label for="teamname" class="col-sm-2 col-form-label">Team Number</label>
               <div class="col-sm-10">
-                <input class="form-control" name="teamname" id="teamname" placeholder="Team Number (Find in 'Team Info' page)" required type="int"/>
+                <input class="form-control" name="teamname" id="teamname" placeholder="Team Number (Find in 'Team Info')" required type="number"/>
               </div>
-              <div class="help-block with-errors"></div>
           </div>
 
           <div class="form-group row">
@@ -50,7 +49,6 @@
               <div class="col-sm-10">
                 <input class="form-control" name="player" id="player" placeholder="Player Number" required type="number"/>
               </div>
-              <div class="help-block with-errors"></div>
           </div>
 
           <div class="form-group row">
@@ -58,7 +56,6 @@
               <div class="col-sm-10">
                 <input class="form-control" placeholder="Attack Combo(s)" name="attacks" id="attacks" required type="text"/>
               </div>
-              <div class="help-block with-errors"></div>
           </div>
 
           <div class="form-group row">
