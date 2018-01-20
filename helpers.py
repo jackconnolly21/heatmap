@@ -40,3 +40,8 @@ def create_user(con, user):
     cur = con.cursor()
     cur.execute(sql, user)
     return cur.lastrowid
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = set(['dvw'])
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

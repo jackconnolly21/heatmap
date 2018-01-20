@@ -3,18 +3,14 @@ import sqlite3 as lite
 
 con = lite.connect('test.db')
 
-files = []
-for f in os.listdir(os.getcwd() + '/ncaaw_codes/teams'):
-    if f.endswith('.SQ'):
-        files.append(f)
+# files = []
+# for f in os.listdir(os.getcwd() + '/data/ncaam_codes'):
+#     if f.endswith('.SQ'):
+#         files.append(f)
 
-with con:
-    cur = con.cursor()
-    # for f in files:
-    #     f = f[:-3]
-    #     s = f.split(" ", 1)
-    #     cur.execute("INSERT INTO teams (vm_num, name) VALUES (?, ?)", (int(s[0]), s[1]))
-    #     con.commit()
-
-    cur.execute("SELECT * FROM teams")
-    print cur.fetchall()
+# with con:
+#     cur = con.cursor()
+#     cur.execute("DELETE FROM teams WHERE id > 1259")
+#
+#     cur.execute("SELECT * FROM teams")
+#     print cur.fetchall()

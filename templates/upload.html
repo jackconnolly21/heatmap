@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Upload
+{% endblock %}
+
+{% block main %}
+
+<div>
+  <h1 align="center">Upload Volleymetrics Files</h1>
+</div>
+
+<br>
+
+<div class="container">
+  <form action="{{ url_for('upload') }}" data-toggle="validator" id="upload" method="post" enctype=multipart/form-data>
+      <div class="form-group row">
+          <label for="dvwfile" class="col-sm-2 col-form-label">DVW File</label>
+          <div class="col-sm-10">
+            <input class="form-control" name="dvwfile" id="dvwfile" placeholder="dvwfile" required type="file"/>
+          </div>
+          <div class="help-block with-errors"></div>
+      </div>
+
+      <br>
+
+      <div class="form-group row">
+          <button class="btn btn-default" type="submit">Upload File</button>
+      </div>
+  </form>
+</div>
+{% endblock %}

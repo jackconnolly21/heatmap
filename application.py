@@ -2,6 +2,7 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from flask_session import Session
 from flask_jsglue import JSGlue
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 from tempfile import gettempdir
 from datetime import datetime
 import sqlite3 as lite
@@ -28,6 +29,10 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# configure app for uploads
+UPLOAD_FOLDER = 'data/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 con = lite.connect('test.db')
 
 @app.route("/")
@@ -40,15 +45,18 @@ def heatmap():
         team = int(request.form.get("teamname"))
         player = int(request.form.get("player"))
         attacks = request.form.get("attacks").split(",")
+        data = request.form.get("datafiles")
+
         if request.form.get("kills"):
             onlyKills = True
         else:
             onlyKills = False
 
         files = []
-        for f in os.listdir(os.getcwd() + '/data/testdata'):
+        folder = 'data/' + data
+        for f in os.listdir(os.getcwd() + '/' + folder):
             if f.endswith('.dvw'):
-                files.append(f)
+                files.append(folder + '/' + f)
 
         locations = []
         for fileName in files:
@@ -61,6 +69,72 @@ def heatmap():
 
     else:
         return render_template("heatmap.html")
+
+@app.route("/upload", methods=["GET", "POST"])
+def upload():
+    if request.method == "POST":
+        if 'dvwfile' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['dvwfile']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # return redirect(url_for('uploaded_file', filename=filename))
+
+        flash("File Uploaded!")
+        return redirect(url_for("upload"))
+    else:
+        return render_template("upload.html")
+
+@app.route("/teams")
+def teams():
+
+    t = "%" + request.args.get("t") + "%"
+
+    con = lite.connect("test.db")
+
+    with con:
+        cur = con.cursor()
+        cur.execute("""SELECT * FROM teams
+                        WHERE name LIKE ?
+                        ORDER BY RANDOM() LIMIT 10""", (t,))
+        teams = cur.fetchall()
+
+    teamList = []
+    for team in teams:
+        teamDict = {
+            "vm_num": team[1],
+            "name": team[2]
+        }
+        teamList.append(teamDict)
+
+    return jsonify(teamList)
+
+@app.route("/info")
+def info():
+    con = lite.connect("test.db")
+
+    with con:
+        cur = con.cursor()
+        cur.execute("SELECT * FROM teams ORDER BY vm_num")
+        teams = cur.fetchall()
+
+    teamList = []
+    for team in teams:
+        teamDict = {
+            "vm_num": team[1],
+            "name": team[2]
+        }
+        teamList.append(teamDict)
+
+    return render_template("info.html", rows=teamList)
+
 
 @app.route("/logout")
 def logout():

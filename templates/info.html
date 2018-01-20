@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Team Info
+{% endblock %}
+
+{% block main %}
+  <h1 align="center">Team Info</h1>
+
+  <div>
+    <table class="table table-striped">
+      <thead>
+        <th scope="col">Volleymetrics Number</th>
+        <th scope="col">Team Name</th>
+      </thead>
+      <tbody>
+          {% for row in rows %}
+          <tr>
+              <td>{{ row.vm_num }}</td>
+              <td>{{ row.name }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+  </div>
+
+{% endblock %}

@@ -26,6 +26,9 @@
         <!-- http://1000hz.github.io/bootstrap-validator/ -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 
+        <!-- https://github.com/corejavascript/typeahead.js/blob/master/doc/jquery_typeahead.md -->
+        <script src="https://cdn.rawgit.com/corejavascript/typeahead.js/master/dist/typeahead.jquery.js"></script>
+
         {{ JSGlue.include() }}
 
         <title>Volleymetrics HeatMaps: {% block title %}{% endblock %}</title>
@@ -61,6 +64,8 @@
                             </ul>
                         {% else %}
                             <ul class="nav navbar-nav navbar-right">
+                                <li><a href="{{ url_for('info') }}">Team Info</a></li>
+                                <li><a href="{{ url_for('upload') }}">Upload Files</a></li>
                                 <li><a href="{{ url_for('register') }}">Register</a></li>
                                 <li><a href="{{ url_for('logout') }}">Log In</a></li>
                             </ul>
