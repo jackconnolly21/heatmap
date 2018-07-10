@@ -12,12 +12,14 @@
       <thead>
         <th scope="col">Volleymetrics Number</th>
         <th scope="col">Team Name</th>
+        <th scope="col">League</th>
       </thead>
       <tbody>
           {% for row in rows %}
           <tr>
-              <td>{{ row.vm_num }}</td>
+              <td>{{ row.id }}</td>
               <td>{{ row.name }}</td>
+              <td>{{ row.league }}</td>
           </tr>
           {% endfor %}
         </tbody>

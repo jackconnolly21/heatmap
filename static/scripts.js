@@ -2,7 +2,8 @@ $(function() {
 
   // configure typeahead
   $("#teamname").typeahead({
-      highlight: false,
+      hint = true,
+      highlight: true,
       minLength: 1
   },
   {
@@ -13,7 +14,7 @@ $(function() {
           suggestion: Handlebars.compile(
               "<div>" +
               // using Handlebars templating language, insert values in
-              "{{{vm_num}}}, {{{name}}}" +
+              "{{{ vm_id }}}, {{{ name }}}" +
               "</div>"
           )
       }
@@ -22,8 +23,9 @@ $(function() {
   $("#teamname").on("typeahead:selected", function(eventObject, suggestion, name) {
 
       // use info
-      number = int(suggestion.vm_num)
-      teamname = suggestion.name
+      var number = int(suggestion.vm_id)
+      alert(number)
+      var teamname = suggestion.name
 
       $("#teamname").val(number)
 

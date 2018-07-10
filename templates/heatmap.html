@@ -6,6 +6,7 @@
 
 {% block main %}
 <div>
-  <img src="heatmap.png" alt="Messed up"/>
+  <img src="{{ result_dict.output_url }}" alt="Messed up" height="180" width="90"/>
+  <a class="btn btn-primary" role="button" href="static/images/output.png" download>Download</a>
 </div>
 {% endblock %}

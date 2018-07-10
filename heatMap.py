@@ -1,8 +1,10 @@
 import pygame, sys, os, time
-from parser import Parser
-from optparse import OptionParser
 from pygame.locals import *
 from timeit import default_timer as timer
+from PIL import Image, ImageDraw
+from optparse import OptionParser
+
+from parser import Parser
 import heatmap as hm
 
 def drawArcs(locations, XSCALE=4, YSCALE=8):
@@ -34,7 +36,8 @@ def drawArcs(locations, XSCALE=4, YSCALE=8):
         pygame.draw.circle(screen,color,end,3)
 
     pygame.display.update()
-    pygame.image.save(screen, 'templates/images/output.bmp')
+    output_url = 'static/images/output.bmp'
+    pygame.image.save(screen, output_url)
 
     # pygame.display.quit()
     # pygame.quit()
@@ -46,6 +49,8 @@ def drawArcs(locations, XSCALE=4, YSCALE=8):
                 pygame.display.iconify()
                 running = False
 
+    return output_url
+
 def drawHeatMap(locations, XSCALE=4, YSCALE=8):
     ends = []
     for location in locations:
@@ -53,7 +58,29 @@ def drawHeatMap(locations, XSCALE=4, YSCALE=8):
         end = (endx*XSCALE, endy*YSCALE)
         ends.append(end)
     h = hm.Heatmap()
-    h.heatmap(ends).save("heatmap.png")
+    area = ((0, 0), (99*XSCALE, 99*YSCALE))
+    h.heatmap(ends, dotsize=50, area=area).save("heatmap.png")
+
+def drawArcsPillow(locations, XSCALE=4, YSCALE=8):
+    im = Image.open("static/images/base_img.png")
+
+    draw = ImageDraw.Draw(im)
+    radius = 3
+    for location in locations:
+        startx, starty = location[0][0]
+        endx, endy = location[0][1]
+        start = (startx*XSCALE, starty*YSCALE)
+        end = (endx*XSCALE, endy*YSCALE)
+        color = colorByRating(location[1])
+        draw.line([start, end], fill=color, width=3)
+        draw.ellipse([end[0] - radius, end[1] - radius, end[0] + radius, end[1] + radius], fill=color, outline=color)
+
+    # write to output
+    del draw
+    
+    output_url = "static/images/output.png"
+    im.save(output_url, "PNG")
+    return output_url
 
 def scaleUp(list, scaleX, scaleY):
     newlist = []
@@ -88,6 +115,7 @@ def readCommands(argv):
     return options
 
 if __name__ == '__main__':
+    print "Running heatMap.py as standalone script"
     options = readCommands(sys.argv[1:])
 
     team = int(options.teamNumber)
@@ -111,4 +139,4 @@ if __name__ == '__main__':
         parser = Parser(fileName)
         locations = parser.getAttackInfo(team, player, attacks, locations, options.onlyKills)
 
-    drawArcs(locations)
+    drawArcsPillow(locations)

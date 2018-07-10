@@ -1,10 +1,7 @@
-finish in heatMap.py allowing multiple files to be analyzed
-make web interface
-
-
-Questions:
-What kinds of visualizations do you want beyond simple?
-What options would you want?
-Give us a list of the the alternate codes
-How do you want the pictures? able to download or what?
-Run for multiple players at a time?
+play with heatmap options
+line/heatmap option
+custom codes
+list uploaded files somehow
+implement the login/register
+allow download option after generating heatmap
+make typeahead work

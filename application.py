@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 from tempfile import gettempdir
 from datetime import datetime
 import sqlite3 as lite
+
 import sys, os, heatMap
 from parser import Parser
 
@@ -13,15 +14,6 @@ from helpers import *
 
 app = Flask(__name__)
 JSGlue(app)
-
-# ensure responses aren't cached
-if app.config["DEBUG"]:
-    @app.after_request
-    def after_request(response):
-        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response.headers["Expires"] = 0
-        response.headers["Pragma"] = "no-cache"
-        return response
 
 # configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = gettempdir()
@@ -33,42 +25,41 @@ Session(app)
 UPLOAD_FOLDER = 'data/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-con = lite.connect('test.db')
+con = lite.connect('heatmap.db')
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/heatmap", methods=["GET", "POST"])
+@app.route("/heatmap", methods=["POST"])
 def heatmap():
-    if request.method == "POST":
-        team = int(request.form.get("teamname"))
-        player = int(request.form.get("player"))
-        attacks = request.form.get("attacks").split(",")
-        data = request.form.get("datafiles")
+    team = int(request.form.get("teamname"))
+    player = int(request.form.get("player"))
+    attacks = request.form.get("attacks").split(",")
+    data = request.form.get("datafiles")
 
-        if request.form.get("kills"):
-            onlyKills = True
-        else:
-            onlyKills = False
-
-        files = []
-        folder = 'data/' + data
-        for f in os.listdir(os.getcwd() + '/' + folder):
-            if f.endswith('.dvw'):
-                files.append(folder + '/' + f)
-
-        locations = []
-        for fileName in files:
-            parser = Parser(fileName)
-            locations = parser.getAttackInfo(team, player, attacks, locations, onlyKills)
-
-        heatMap.drawArcs(locations)
-
-        return render_template("heatmap.html")
-
+    if request.form.get("kills"):
+        onlyKills = True
     else:
-        return render_template("heatmap.html")
+        onlyKills = False
+
+    files = []
+    folder = 'data/' + data
+    for f in os.listdir(os.getcwd() + '/' + folder):
+        if f.endswith('.dvw'):
+            files.append(folder + '/' + f)
+
+    locations = []
+    for fileName in files:
+        parser = Parser(fileName)
+        locations = parser.getAttackInfo(team, player, attacks, locations, onlyKills)
+
+    output_url = heatMap.drawArcsPillow(locations)
+    print output_url
+    result_dict = {
+        'heatmap_url': output_url,
+    }
+    return render_template("heatmap.html", result_dict=result_dict)
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
@@ -97,39 +88,41 @@ def teams():
 
     t = "%" + request.args.get("t") + "%"
 
-    con = lite.connect("test.db")
+    con = lite.connect("heatmap.db")
 
     with con:
         cur = con.cursor()
         cur.execute("""SELECT * FROM teams
-                        WHERE name LIKE ?
+                        WHERE teamname LIKE ?
                         ORDER BY RANDOM() LIMIT 10""", (t,))
         teams = cur.fetchall()
 
     teamList = []
     for team in teams:
         teamDict = {
-            "vm_num": team[1],
-            "name": team[2]
+            "vm_id": team[0],
+            "name": team[1]
         }
         teamList.append(teamDict)
 
+    print teamList
     return jsonify(teamList)
 
 @app.route("/info")
 def info():
-    con = lite.connect("test.db")
+    con = lite.connect("heatmap.db")
 
     with con:
         cur = con.cursor()
-        cur.execute("SELECT * FROM teams ORDER BY vm_num")
+        cur.execute("SELECT * FROM teams ORDER BY id")
         teams = cur.fetchall()
 
     teamList = []
     for team in teams:
         teamDict = {
-            "vm_num": team[1],
-            "name": team[2]
+            "id": team[0],
+            "name": team[1],
+            "league": team[2]
         }
         teamList.append(teamDict)
 

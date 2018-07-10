@@ -1,0 +1,97 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Flask	application.py	/^from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify$/;"	i
+JSGlue	application.py	/^from flask_jsglue import JSGlue$/;"	i
+OptionParser	heatMap.py	/^from optparse import OptionParser$/;"	i
+Parser	application.py	/^from parser import Parser$/;"	i
+Parser	heatMap.py	/^from parser import Parser$/;"	i
+Parser	parser.py	/^class Parser:$/;"	c
+Session	application.py	/^from flask_session import Session$/;"	i
+UPLOAD_FOLDER	application.py	/^UPLOAD_FOLDER = 'data\/uploads'$/;"	v
+__init__	parser.py	/^    def __init__(self, filename):$/;"	m	class:Parser
+after_request	application.py	/^    def after_request(response):$/;"	f
+allowed_file	helpers.py	/^def allowed_file(filename):$/;"	f
+apology	helpers.py	/^def apology(message, code=400):$/;"	f
+app	application.py	/^app = Flask(__name__)$/;"	v
+attacks	heatMap.py	/^        attacks = ['ALL']$/;"	v
+attacks	heatMap.py	/^        attacks = [x.upper() for x in options.attackCombos.split(',')]$/;"	v
+check_password_hash	application.py	/^from werkzeug.security import check_password_hash, generate_password_hash$/;"	i
+check_password_hash	test.py	/^from werkzeug.security import check_password_hash, generate_password_hash$/;"	i
+colorByRating	heatMap.py	/^def colorByRating(rating):$/;"	f
+con	application.py	/^con = lite.connect('test.db')$/;"	v
+con	script.py	/^con = lite.connect('test.db')$/;"	v
+con	test.py	/^con = lite.connect("test.db")$/;"	v
+create_user	helpers.py	/^def create_user(con, user):$/;"	f
+csv	parser.py	/^import csv$/;"	i
+csv	script.py	/^import csv, os, sys$/;"	i
+cur	test.py	/^cur = con.cursor()$/;"	v
+datetime	application.py	/^from datetime import datetime$/;"	i
+decorated_function	helpers.py	/^    def decorated_function(*args, **kwargs):$/;"	f	function:login_required
+drawArcs	heatMap.py	/^def drawArcs(locations, XSCALE=4, YSCALE=8):$/;"	f
+drawHeatMap	heatMap.py	/^def drawHeatMap(locations, XSCALE=4, YSCALE=8):$/;"	f
+escape	helpers.py	/^    def escape(s):$/;"	f	function:apology
+files	heatMap.py	/^    files = []$/;"	v
+flash	application.py	/^from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify$/;"	i
+folder	heatMap.py	/^    folder = 'data\/' + options.folderName + '\/'$/;"	v
+generate_password_hash	application.py	/^from werkzeug.security import check_password_hash, generate_password_hash$/;"	i
+generate_password_hash	test.py	/^from werkzeug.security import check_password_hash, generate_password_hash$/;"	i
+getAttackInfo	parser.py	/^    def getAttackInfo(self, team, player, attacks, list, onlyKills=False):$/;"	m	class:Parser
+getHomeAndAway	parser.py	/^    def getHomeAndAway(self):$/;"	m	class:Parser
+getInfo	parser.py	/^    def getInfo(self, team, player):$/;"	m	class:Parser
+gettempdir	application.py	/^from tempfile import gettempdir$/;"	i
+heatMap	application.py	/^import sys, os, heatMap$/;"	i
+heatmap	application.py	/^def heatmap():$/;"	f
+helpers	test.py	/^import helpers$/;"	i
+hm	heatMap.py	/^import heatmap as hm$/;"	i
+index	application.py	/^def index():$/;"	f
+info	application.py	/^def info():$/;"	f
+jsonify	application.py	/^from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify$/;"	i
+lite	application.py	/^import sqlite3 as lite$/;"	i
+lite	script.py	/^import sqlite3 as lite$/;"	i
+lite	test.py	/^import sqlite3 as lite$/;"	i
+locations	heatMap.py	/^        locations = parser.getAttackInfo(team, player, attacks, locations, options.onlyKills)$/;"	v
+locations	heatMap.py	/^    locations = []$/;"	v
+login	application.py	/^def login():$/;"	f
+login_required	helpers.py	/^def login_required(f):$/;"	f
+logout	application.py	/^def logout():$/;"	f
+options	heatMap.py	/^    options = readCommands(sys.argv[1:])$/;"	v
+os	application.py	/^import sys, os, heatMap$/;"	i
+os	heatMap.py	/^import pygame, sys, os, time$/;"	i
+os	script.py	/^import csv, os, sys$/;"	i
+parser	heatMap.py	/^        parser = Parser(fileName)$/;"	v
+password	application.py	/^def password():$/;"	f
+player	heatMap.py	/^    player = int(options.playerNumber)$/;"	v
+pygame	heatMap.py	/^import pygame, sys, os, time$/;"	i
+readCombos	parser.py	/^    def readCombos(self):$/;"	m	class:Parser
+readCommands	heatMap.py	/^def readCommands(argv):$/;"	f
+readFile	parser.py	/^    def readFile(self, filename):$/;"	m	class:Parser
+readRoster	parser.py	/^    def readRoster(self, rosterInfo):$/;"	m	class:Parser
+redirect	application.py	/^from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify$/;"	i
+redirect	helpers.py	/^from flask import redirect, render_template, request, session, url_for$/;"	i
+register	application.py	/^def register():$/;"	f
+render_template	application.py	/^from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify$/;"	i
+render_template	helpers.py	/^from flask import redirect, render_template, request, session, url_for$/;"	i
+request	application.py	/^from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify$/;"	i
+request	helpers.py	/^from flask import redirect, render_template, request, session, url_for$/;"	i
+rows	test.py	/^rows = cur.execute("SELECT * FROM teams").fetchall()$/;"	v
+scaleUp	heatMap.py	/^def scaleUp(list, scaleX, scaleY):$/;"	f
+secure_filename	application.py	/^from werkzeug.utils import secure_filename$/;"	i
+session	application.py	/^from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify$/;"	i
+session	helpers.py	/^from flask import redirect, render_template, request, session, url_for$/;"	i
+sys	application.py	/^import sys, os, heatMap$/;"	i
+sys	heatMap.py	/^import pygame, sys, os, time$/;"	i
+sys	script.py	/^import csv, os, sys$/;"	i
+team	heatMap.py	/^    team = int(options.teamNumber)$/;"	v
+teams	application.py	/^def teams():$/;"	f
+teams	static/scripts.js	/^function teams(query, syncResults, asyncResults)$/;"	f
+teams.parameters.t	static/scripts.js	/^    var parameters = {$/;"	p
+time	heatMap.py	/^import pygame, sys, os, time$/;"	i
+timer	heatMap.py	/^from timeit import default_timer as timer$/;"	i
+upload	application.py	/^def upload():$/;"	f
+url_for	application.py	/^from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify$/;"	i
+url_for	helpers.py	/^from flask import redirect, render_template, request, session, url_for$/;"	i
+wraps	helpers.py	/^from functools import wraps$/;"	i
