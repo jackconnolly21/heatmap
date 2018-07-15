@@ -15,14 +15,14 @@ USERS = sql.Table('users', metadata,
                   sql.Column('lastname', sql.Text)
                   )
 
-TEAMS = sql.Table('games', metadata,
+TEAMS = sql.Table('teams', metadata,
                   sql.Column('id', sql.Integer, nullable=False, unique=True),
                   sql.Column('teamname', sql.Text, nullable=False),
                   sql.Column('league', sql.Text, nullable=False)
                   )
 
-UPLOADS = sql.Table('guesses', metadata,
+UPLOADS = sql.Table('uploads', metadata,
                   sql.Column('id', sql.Integer, primary_key=True),
-                  sql.Column('user_id', sql.Integer, ForeignKey(USERS.c.id), nullable=False)
-                  sql.Column('guess', sql.Text, nullable=False),
+                  sql.Column('user_id', sql.Integer, ForeignKey(USERS.c.id), nullable=False),
+                  sql.Column('file_key', sql.Text, nullable=False),
                   )

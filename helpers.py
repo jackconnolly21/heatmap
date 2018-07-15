@@ -1,11 +1,12 @@
 import os
+import sqlalchemy
 import sqlite3 as lite
-
+from datetime import datetime
 from flask import redirect, render_template, request, session, url_for, make_response
 from functools import wraps, update_wrapper, reduce
-from datetime import datetime
 
-import datastore
+
+from db import datastore
 
 def apology(message, code=400):
     """Renders message as an apology to user."""
@@ -46,23 +47,13 @@ def nocache(view):
 
     return update_wrapper(no_cache, view)
 
-def create_user(con, user):
-    """
-    Create a new project into the projects table
-    :param con:
-    :param user:
-    :return: user id
-    """
-    sql = ''' INSERT INTO users(username,hash,name)
-              VALUES(?,?,?) '''
-    cur = con.cursor()
-    cur.execute(sql, user)
-    return cur.lastrowid
-
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = set(['dvw'])
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def get_db_engine():
+    return sqlalchemy.create_engine("sqlite:///db/heatmap.db")
 
 def attacks_to_string(attacks):
     return reduce(lambda x, y: str(x) + "-" + str(y), attacks)
@@ -74,10 +65,9 @@ def generate_output_filename(team, player, attacks, kills):
     return output_folder + filename
 
 def generate_caption(team, player, attacks, kills):
-    # TODO: change to sqlalchemy
-    con = lite.connect('db/heatmap.db')
+    engine = get_db_engine()
     attacks_str = attacks_to_string(attacks)
-    teamname = datastore.get_teamname_by_number(con, team)
+    teamname = datastore.get_teamname_by_number(engine, team)
     top_caption = "%s #%d" % (teamname, player)
     bottom_caption = "Attacks: %s" % (attacks_str)
     if kills:

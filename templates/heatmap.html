@@ -5,21 +5,28 @@
 {% endblock %}
 
 {% block main %}
-<div class="container">
-  <div class="row">
-    <div class="col-centered">
+
+    <div>
+      <h1 align="center">Create HeatMap</h1>
+    </div>
+
+    <br>
+
+    <div class="container">
       <div class="row">
-        <h4 class="col-centered">Generated Heatmap:</h4><br/>
-        <div class="col-centered">
-          <img src="{{ result_dict.output_url }}" alt="Messed up" height="{{ result_dict.height }}" width="{{ result_dict.width }}"/>
+        <div class="col-md-6 col-md-offset-3">
+          <div class="row text-center">
+            <h4 class="text-center">Generated Heatmap:</h4><br/>
+            <div>
+              <img src="{{ result_dict.output_url }}" alt="Messed up" height="{{ result_dict.height }}" width="{{ result_dict.width }}"/>
+            </div>
+          </div>
+          <br/>
+          <div class="row text-center">
+            <a type="button" class="col-centered btn btn-primary" role="button" href="{{ result_dict.output_url }}" download>Download</a>
+          </div>
         </div>
       </div>
-      <br/>
-      <div class="row">
-        <a type="button" class="col-centered btn btn-primary" role="button" href="{{ result_dict.output_url }}" download>Download</a>
-      </div>
     </div>
-  </div>
-</div>
 
 {% endblock %}

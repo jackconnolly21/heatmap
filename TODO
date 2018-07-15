@@ -2,11 +2,13 @@ play with heatmap options
 line/heatmap option
 custom codes
 list uploaded files somehow
-implement the login/register
 make typeahead work
-refactor database stuff
 heatmap.html not showing actual image?
+option to do multiple uploads at a time?
 
 done:
 allow download option after generating heatmap
 add captions
+refactor database stuff
+implement the login/register
+fix register/login layout
