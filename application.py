@@ -6,6 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 from tempfile import gettempdir
 from datetime import datetime
+from functools import reduce
 import sqlite3 as lite
 
 from db import datastore
@@ -30,15 +31,24 @@ engine = get_db_engine()
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+
+    user_upload_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(session['user_id']))
+    upload_list = [f for f in os.listdir(user_upload_folder) if f.endswith('.dvw')]
+
+    return render_template("index.html", result_dict={'uploads': upload_list})
 
 @app.route("/heatmap", methods=["POST"])
 @login_required
 def heatmap():
     team = int(request.form.get("teamname"))
     player = int(request.form.get("player"))
-    attacks = request.form.get("attacks").split(",")
+    attacks = request.form.get("attacks")
     data = request.form.get("datafiles")
+
+    if attacks.lower() == 'all':
+        attacks = ['ALL']
+    else:
+        attacks = attacks.split(',')
 
     if request.form.get("kills"):
         onlyKills = True
@@ -46,6 +56,8 @@ def heatmap():
         onlyKills = False
 
     files = []
+    if data == 'uploads':
+        data = 'uploads/%d' % session['user_id']
     folder = 'data/' + data
     for f in os.listdir(os.getcwd() + '/' + folder):
         if f.endswith('.dvw'):
@@ -57,7 +69,7 @@ def heatmap():
         locations = parser.getAttackInfo(team, player, attacks, locations, onlyKills)
 
     top_caption, bottom_caption = generate_caption(team, player, attacks, onlyKills)
-    output_url = generate_output_filename(team, player, attacks, onlyKills)
+    output_url = generate_output_filename(team, player, attacks, onlyKills, session['user_id'])
     output_dict = heatMap.drawArcsPillow(locations, output_url, top_caption=top_caption, bottom_caption=bottom_caption)
 
     result_dict = {
@@ -81,8 +93,13 @@ def upload():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            filename = '_'.join('user', session['user_id'], secure_filename(file.filename))
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            filename = secure_filename(file.filename)
+            upload_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(session['user_id']))
+
+            if not os.path.isdir(upload_folder):
+                os.makedirs(upload_folder)
+
+            file.save(os.path.join(upload_folder, filename))
 
             upload_dict = {'user_id': session['user_id'], 'file_key': filename}
             datastore.insert_upload_row(engine, upload_dict)
@@ -101,6 +118,7 @@ def teams():
 
     print team_list
     return jsonify(team_list)
+
 
 @app.route("/info")
 @login_required

@@ -31,15 +31,16 @@ def update_password_hash(engine, user_id, pw_hash):
 
 # TEAMS table
 def get_teamname_by_number(engine, number):
-    stmt = text("SELECT teamname FROM teams WHERE id=%d" % number)
-    team = engine.execute(stmt).fetchone()[0]
-    return team
+    stmt = select([TEAMS.c.teamname])
+    stmt = stmt.where(TEAMS.c.id == number)
+    return engine.execute(stmt).fetchone()[0]
 
 def get_all_teams(engine):
     stmt = TEAMS.select().order_by(TEAMS.c.id)
     return engine.execute(stmt).fetchall()
 
 def get_teams_typeahead(engine, substring, limit=10):
+    # TODO: Make this ORM
     stmt = text("SELECT * FROM teams WHERE teamname LIKE %s ORDER BY RANDOM() LIMIT 10" % (substring))
     teams = engine.execute(stmt).fetchall()
     return [{'vm_num': row['id'], 'name': row['teamname']} for row in teams]

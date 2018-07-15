@@ -30,6 +30,7 @@ $(function() {
       $("#teamname").val(number)
 
   });
+
 });
 
 function teams(query, syncResults, asyncResults)

@@ -27,7 +27,15 @@
                       <input class="form-check-input" type="radio" name="datafiles" id="uploads" value="uploads" checked>
                       <label class="form-check-label" for="uploads">
                         Uploaded Files
-                      </label>
+                      </label>&ensp;
+                      <button class="btn btn-xs btn-info" type="button" id="list_uploads" data-toggle="collapse" data-target="#uploadList" aria-expanded="false" aria-controls="collapseExample">Show Uploads</button>
+                    </div>
+                    <div id="uploadList" class="collapse">
+                      <ul class="list-unstyled">
+                        {% for upload in result_dict.uploads %}
+                        <li>{{ upload }}</li>
+                        {% endfor %}
+                      </ul>
                     </div>
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="datafiles" id="ivy" value="ivy2017">

@@ -1,10 +1,10 @@
+option to do multiple uploads at a time?
 play with heatmap options
 line/heatmap option
-custom codes
-list uploaded files somehow
-make typeahead work
 heatmap.html not showing actual image?
-option to do multiple uploads at a time?
+custom codes
+make typeahead work
+change password route not changing password
 
 done:
 allow download option after generating heatmap
@@ -12,3 +12,4 @@ add captions
 refactor database stuff
 implement the login/register
 fix register/login layout
+list uploaded files somehow

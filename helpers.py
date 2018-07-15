@@ -58,8 +58,11 @@ def get_db_engine():
 def attacks_to_string(attacks):
     return reduce(lambda x, y: str(x) + "-" + str(y), attacks)
 
-def generate_output_filename(team, player, attacks, kills):
-    output_folder = 'static/images/output/'
+def generate_output_filename(team, player, attacks, kills, user_id):
+    output_folder = 'static/images/output/%s/' % (str(user_id))
+    if not os.path.isdir(output_folder):
+        os.makedirs(output_folder)
+        
     attacks = attacks_to_string(attacks)
     filename = 'output_team_%d_player_%d_attacks_%s_kills_%s.png' % (team, player, attacks, kills)
     return output_folder + filename
