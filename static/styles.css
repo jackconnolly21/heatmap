@@ -15,3 +15,9 @@ h2 { font: bold 1.5em "Times New Roman", Times, serif; }
 
 
 h3 { font: bold 1.2em Arial, Geneva, Helvetica, sans-serif; }
+
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}

@@ -1,3 +1,4 @@
+import sys, os, heatMap
 from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify
 from flask_session import Session
 from flask_jsglue import JSGlue
@@ -7,9 +8,7 @@ from tempfile import gettempdir
 from datetime import datetime
 import sqlite3 as lite
 
-import sys, os, heatMap
 from parser import Parser
-
 from helpers import *
 
 app = Flask(__name__)
@@ -25,13 +24,14 @@ Session(app)
 UPLOAD_FOLDER = 'data/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-con = lite.connect('heatmap.db')
+engine = sqlalchemy.create_engine("sqlite:///db/project.db")
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
 @app.route("/heatmap", methods=["POST"])
+@nocache
 def heatmap():
     team = int(request.form.get("teamname"))
     player = int(request.form.get("player"))
@@ -54,14 +54,19 @@ def heatmap():
         parser = Parser(fileName)
         locations = parser.getAttackInfo(team, player, attacks, locations, onlyKills)
 
-    output_url = heatMap.drawArcsPillow(locations)
-    print output_url
+    top_caption, bottom_caption = generate_caption(team, player, attacks, onlyKills)
+    output_url = generate_output_filename(team, player, attacks, onlyKills)
+    output_dict = heatMap.drawArcsPillow(locations, output_url, top_caption=top_caption, bottom_caption=bottom_caption)
+
     result_dict = {
-        'heatmap_url': output_url,
+        'output_url': output_url,
+        'width': output_dict['width'],
+        'height': output_dict['height'],
     }
     return render_template("heatmap.html", result_dict=result_dict)
 
 @app.route("/upload", methods=["GET", "POST"])
+@nocache
 def upload():
     if request.method == "POST":
         if 'dvwfile' not in request.files:
@@ -78,6 +83,8 @@ def upload():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # return redirect(url_for('uploaded_file', filename=filename))
 
+        # TODO: add row in the uploads table
+
         flash("File Uploaded!")
         return redirect(url_for("upload"))
     else:
@@ -88,7 +95,8 @@ def teams():
 
     t = "%" + request.args.get("t") + "%"
 
-    con = lite.connect("heatmap.db")
+    # TODO: Change to sqlalchemy
+    con = lite.connect("db/heatmap.db")
 
     with con:
         cur = con.cursor()
@@ -110,7 +118,8 @@ def teams():
 
 @app.route("/info")
 def info():
-    con = lite.connect("heatmap.db")
+    # TODO: change to sqlalchemy
+    con = lite.connect("db/heatmap.db")
 
     with con:
         cur = con.cursor()
@@ -227,7 +236,3 @@ def register():
 @login_required
 def password():
     return render_template("index.html")
-
-
-if __name__ == "__main__":
-    app.run()

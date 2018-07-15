@@ -1,20 +1,23 @@
 import pygame, sys, os, time
 from pygame.locals import *
 from timeit import default_timer as timer
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 from optparse import OptionParser
 
 from parser import Parser
 import heatmap as hm
+
+white = 255, 240, 200
+red = 255, 0, 0
+green = 0, 255, 0
+yellow = 255, 255, 0
+black = 20, 20, 40
 
 def drawArcs(locations, XSCALE=4, YSCALE=8):
     pygame.display.init()
     screen = pygame.display.set_mode([100*XSCALE, 100*YSCALE])
     # caption = "HeatMap: #" + str(info['number']) + " " + info['name'] + " (" + info['team'] + ")"
     pygame.display.set_caption('Volleymetrics HeatMap')
-
-    white = 255, 240, 200
-    black = 20, 20, 40
 
     screen.fill(black)
 
@@ -36,7 +39,7 @@ def drawArcs(locations, XSCALE=4, YSCALE=8):
         pygame.draw.circle(screen,color,end,3)
 
     pygame.display.update()
-    output_url = 'static/images/output.bmp'
+    output_url = "data/output_images/output.bmp"
     pygame.image.save(screen, output_url)
 
     # pygame.display.quit()
@@ -59,9 +62,9 @@ def drawHeatMap(locations, XSCALE=4, YSCALE=8):
         ends.append(end)
     h = hm.Heatmap()
     area = ((0, 0), (99*XSCALE, 99*YSCALE))
-    h.heatmap(ends, dotsize=50, area=area).save("heatmap.png")
+    h.heatmap(ends, dotsize=50, area=area).save("data/output_images/output.png")
 
-def drawArcsPillow(locations, XSCALE=4, YSCALE=8):
+def drawArcsPillow(locations, output_url, top_caption=None, bottom_caption=None, XSCALE=4, YSCALE=8):
     im = Image.open("static/images/base_img.png")
 
     draw = ImageDraw.Draw(im)
@@ -75,12 +78,19 @@ def drawArcsPillow(locations, XSCALE=4, YSCALE=8):
         draw.line([start, end], fill=color, width=3)
         draw.ellipse([end[0] - radius, end[1] - radius, end[0] + radius, end[1] + radius], fill=color, outline=color)
 
-    # write to output
-    del draw
-    
-    output_url = "static/images/output.png"
+    width, height = im.size
+
+    font_size = 10
+    font = ImageFont.truetype(font='static/fonts/arial.ttf', size=font_size)
+    if top_caption is not None:
+        draw.text((20, 20), top_caption, font=font, fill=white)
+    if bottom_caption is not None:
+        draw.text((20, height - (20 + font_size)), bottom_caption, font=font, fill=white)
+
     im.save(output_url, "PNG")
-    return output_url
+    del draw
+
+    return {'url': output_url, 'width': width, 'height': height}
 
 def scaleUp(list, scaleX, scaleY):
     newlist = []
@@ -89,10 +99,6 @@ def scaleUp(list, scaleX, scaleY):
     return newlist
 
 def colorByRating(rating):
-    white = 255, 240, 200
-    red = 255, 0, 0
-    green = 0, 255, 0
-    yellow = 255, 255, 0
     if rating == '#':
         return green
     elif rating == '=':

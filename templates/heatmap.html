@@ -5,8 +5,21 @@
 {% endblock %}
 
 {% block main %}
-<div>
-  <img src="{{ result_dict.output_url }}" alt="Messed up" height="180" width="90"/>
-  <a class="btn btn-primary" role="button" href="static/images/output.png" download>Download</a>
+<div class="container">
+  <div class="row">
+    <div class="col-centered">
+      <div class="row">
+        <h4 class="col-centered">Generated Heatmap:</h4><br/>
+        <div class="col-centered">
+          <img src="{{ result_dict.output_url }}" alt="Messed up" height="{{ result_dict.height }}" width="{{ result_dict.width }}"/>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <a type="button" class="col-centered btn btn-primary" role="button" href="{{ result_dict.output_url }}" download>Download</a>
+      </div>
+    </div>
+  </div>
 </div>
+
 {% endblock %}

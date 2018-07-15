@@ -3,5 +3,10 @@ line/heatmap option
 custom codes
 list uploaded files somehow
 implement the login/register
-allow download option after generating heatmap
 make typeahead work
+refactor database stuff
+heatmap.html not showing actual image?
+
+done:
+allow download option after generating heatmap
+add captions
