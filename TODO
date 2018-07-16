@@ -4,7 +4,6 @@ line/heatmap option
 heatmap.html not showing actual image?
 custom codes
 make typeahead work
-change password route not changing password
 
 done:
 allow download option after generating heatmap
@@ -13,3 +12,5 @@ refactor database stuff
 implement the login/register
 fix register/login layout
 list uploaded files somehow
+change password route not changing password
+added default combo info

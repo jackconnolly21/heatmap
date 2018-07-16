@@ -126,16 +126,23 @@ def info():
 
     teams = datastore.get_all_teams(engine)
 
-    teamList = []
-    for team in teams:
-        teamDict = {
-            "id": team[0],
-            "name": team[1],
-            "league": team[2]
-        }
-        teamList.append(teamDict)
+    return render_template("info.html", rows=teams)
 
-    return render_template("info.html", rows=teamList)
+
+@app.route("/combos")
+@login_required
+def combos():
+
+    testdata_folder = os.path.join('data','testdata')
+    base_file_name = 'CU-PENN.dvw'
+    base_file_key = os.path.join(testdata_folder, base_file_name)
+
+    parser = Parser(base_file_key)
+    combo_list = parser.readCombos()
+
+    combo_dicts = [{'combo': combo, 'name': name} for combo, (name, _) in sorted(combo_list.iteritems())]
+
+    return render_template("combos.html", rows=combo_dicts)
 
 
 @app.route("/logout")
@@ -242,7 +249,8 @@ def password():
             return apology("new passwords must match")
 
         # update hash in database
-        datastore.update_password_hash(engine, session['user_id'], pw_hash)
+        datastore.update_password_hash(engine, session['user_id'],
+                                        generate_password_hash(request.form.get("new")))
 
         # redirect to portfolio
         flash("Password changed!")

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Combo Info
+{% endblock %}
+
+{% block main %}
+  <h1 align="center">Default Combos</h1>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <table class="table table-striped">
+          <thead>
+            <th scope="col">Combo Code</th>
+            <th scope="col">Attack Name</th>
+          </thead>
+          <tbody>
+              {% for row in rows %}
+              <tr>
+                  <td>{{ row.combo }}</td>
+                  <td>{{ row.name }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
