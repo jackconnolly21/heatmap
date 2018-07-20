@@ -1,9 +1,5 @@
-import datetime
-
-import enum
 import sqlalchemy as sql
 from sqlalchemy.schema import ForeignKey
-from sqlalchemy.dialects import sqlite
 
 metadata = sql.MetaData()
 

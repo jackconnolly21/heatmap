@@ -41,7 +41,7 @@ def get_all_teams(engine):
 
 def get_teams_typeahead(engine, substring, limit=10):
     # TODO: Make this ORM
-    stmt = text("SELECT * FROM teams WHERE teamname LIKE %s ORDER BY RANDOM() LIMIT 10" % (substring))
+    stmt = text('SELECT * FROM teams WHERE teamname LIKE %s ORDER BY RANDOM() LIMIT 10' % (substring))
     teams = engine.execute(stmt).fetchall()
     return [{'vm_num': row['id'], 'name': row['teamname']} for row in teams]
 

@@ -76,13 +76,15 @@
                 </div>
             </nav>
 
-            {% if get_flashed_messages() %}
-                <header>
-                    <div class="alert alert-info" role="alert">
-                        {{ get_flashed_messages() | join(" ") }}
-                    </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <header class="flashes">
+                {% for category, message in messages %}
+                  <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
                 </header>
-            {% endif %}
+              {% endif %}
+            {% endwith %}
 
             <main>
                 {% block main %}{% endblock %}

@@ -1,9 +1,11 @@
 option to do multiple uploads at a time?
-play with heatmap options
-line/heatmap option
+Marty - play with heatmap options
+Marty - line/heatmap option
 heatmap.html not showing actual image?
 custom codes
 make typeahead work
+different kind of flashed messages?
+save inputted info in *register*/login if something goes wrong
 
 done:
 allow download option after generating heatmap
@@ -14,3 +16,8 @@ fix register/login layout
 list uploaded files somehow
 change password route not changing password
 added default combo info
+make a class for color or find one?
+get rid of cs50 "apology page"
+add more print statements in the code to log better
+change double quotes to single
+make a requirements.txt

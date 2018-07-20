@@ -1,62 +1,65 @@
 import csv
 
+
 class Parser:
 
     def __init__(self, filename):
-        self.fileSections = self.readFile(filename)
-        self.homeTeam, self.awayTeam = self.getHomeAndAway()
-        self.homeRoster = self.readRoster(self.fileSections['[3PLAYERS-H]'])
-        self.awayRoster = self.readRoster(self.fileSections['[3PLAYERS-V]'])
+        self.file_sections = self.read_file(filename)
+        self.home_team, self.away_team = self.get_home_and_away()
+        self.home_roster = self.read_roster(self.file_sections['[3PLAYERS-H]'])
+        self.away_roster = self.read_roster(self.file_sections['[3PLAYERS-V]'])
 
-    def readFile(self, filename):
-        fileSections = {}
+    @staticmethod
+    def read_file(filename):
+        file_sections = {}
         with open(filename, 'rb') as dvwfile:
             reader = csv.reader(dvwfile, delimiter=';', quotechar='|')
-            currentSection = ''
+            current_section = ''
             for row in reader:
                 try:
                     if row[0][0] == '[':
-                        fileSections[row[0]] = []
-                        currentSection = row[0]
+                        file_sections[row[0]] = []
+                        current_section = row[0]
                     else:
-                        fileSections[currentSection].append(row)
+                        file_sections[current_section].append(row)
                 except:
-                    fileSections[currentSection].append(row)
-        return fileSections
+                    file_sections[current_section].append(row)
+        return file_sections
 
-    def getHomeAndAway(self):
-        teams = self.fileSections['[3TEAMS]']
-        homeTeam = (teams[0][0], teams[0][1])
-        awayTeam = (teams[1][0], teams[1][1])
-        return (homeTeam, awayTeam)
+    def get_home_and_away(self):
+        teams = self.file_sections['[3TEAMS]']
+        home_team = (teams[0][0], teams[0][1])
+        away_team = (teams[1][0], teams[1][1])
+        return (home_team, away_team)
 
-    def readRoster(self, rosterInfo):
+    @staticmethod
+    def read_roster(roster_info):
         roster = {}
-        for player in rosterInfo:
+        for player in roster_info:
             number = int(player[1])
-            firstName = player[10]
-            lastName = player[9]
-            name = str(firstName) + ' ' + str(lastName)
+            first_name = player[10]
+            last_name = player[9]
+            name = str(first_name) + ' ' + str(last_name)
             roster[number] = name
         return roster
 
-    def readCombos(self):
-        combos = self.fileSections['[3ATTACKCOMBINATION]']
-        comboList = {}
+    def read_combos(self):
+        combos = self.file_sections['[3ATTACKCOMBINATION]']
+        combo_list = {}
         for combo in combos:
             code = combo[0]
             name = combo[4]
             location = combo[7]
-            comboList[code] = (name, location)
-        return comboList
+            combo_list[code] = (name, location)
+        return combo_list
 
-    def getAttackInfo(self, team, player, attacks, list, onlyKills=False):
+    def get_attack_info(self, team, player, attacks, locations, only_kills=False):
 
-        gameInfo = self.fileSections['[3SCOUT]']
+        game_info = self.file_sections['[3SCOUT]']
 
-        if str(team) == self.homeTeam[0]:
+        if str(team) == self.home_team[0]:
             key = '*'
-        elif str(team) == self.awayTeam[0]:
+        elif str(team) == self.away_team[0]:
             key = 'a'
         else:
             return list
@@ -64,32 +67,32 @@ class Parser:
         key += str(player)
         key += 'A'
 
-        for event in gameInfo:
+        for event in game_info:
             info = event[0]
             if info[:4] == key:
                 if info[6:8] in attacks or attacks[0] == 'ALL':
                     start = event[4]
                     end = event[6]
                     rating = info[5]
-                    if not onlyKills or rating == "#":
-                        arc = ((100-int(start[2:]), int(start[:2])), (100-int(end[2:]), int(end[:2])))
-                        list.append((arc, rating))
+                    if not only_kills or rating == '#':
+                        arc = ((100 - int(start[2:]), int(start[:2])), (100 - int(end[2:]), int(end[:2])))
+                        locations.append((arc, rating))
 
-        return list
+        return locations
 
-    def getInfo(self, team, player):
+    def get_info(self, team, player):
 
-        if str(team) == self.homeTeam[0]:
-            playerName = self.homeRoster[player]
-            teamName = self.homeTeam[1]
+        if str(team) == self.home_team[0]:
+            player_name = self.home_roster[player]
+            team_name = self.home_team[1]
         else:
-            playerName = self.awayRoster[player]
-            teamName = self.awayTeam[1]
+            player_name = self.away_roster[player]
+            team_name = self.away_team[1]
 
         info = {
-            'name': playerName,
+            'name': player_name,
             'number': player,
-            'team': teamName
+            'team': team_name
         }
 
         return info
