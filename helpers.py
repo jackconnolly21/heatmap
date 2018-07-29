@@ -1,6 +1,5 @@
 import os
 import sqlalchemy
-from enum import Enum
 from datetime import datetime
 from flask import redirect, render_template, request, session, url_for, make_response
 from functools import wraps, update_wrapper, reduce
@@ -71,7 +70,7 @@ def generate_caption(team, player, attacks, kills):
     return top_caption, bottom_caption
 
 
-class Color(Enum):
+class Color():
     white = 255, 240, 200
     red = 255, 0, 0
     green = 0, 255, 0
