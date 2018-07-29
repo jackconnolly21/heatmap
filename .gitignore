@@ -2,3 +2,4 @@
 *.db
 *.tags
 *.idea/*
+*.pyc
