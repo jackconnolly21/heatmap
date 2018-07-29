@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 from optparse import OptionParser
 
 from parser import Parser
-import heatmap as hm
+# import heatmap as hm
 from helpers import Color
 
 
@@ -52,15 +52,16 @@ def draw_arcs(locations, x_scale=4, y_scale=8):
     return output_url
 
 
-def draw_heat_map(locations, x_scale=4, y_scale=8):
-    ends = []
-    for location in locations:
-        end_x, end_y = location[0][1]
-        end = (end_x * x_scale, end_y * y_scale)
-        ends.append(end)
-    h = hm.Heatmap()
-    area = ((0, 0), (99 * x_scale, 99 * y_scale))
-    h.heatmap(ends, dotsize=50, area=area).save('data/output_images/output.png')
+# Disable for now while deploying to Heroku
+# def draw_heat_map(locations, x_scale=4, y_scale=8):
+#     ends = []
+#     for location in locations:
+#         end_x, end_y = location[0][1]
+#         end = (end_x * x_scale, end_y * y_scale)
+#         ends.append(end)
+#     h = hm.Heatmap()
+#     area = ((0, 0), (99 * x_scale, 99 * y_scale))
+#     h.heatmap(ends, dotsize=50, area=area).save('data/output_images/output.png')
 
 
 def draw_arcs_pillow(locations, output_url, top_caption=None, bottom_caption=None, x_scale=4, y_scale=8):
