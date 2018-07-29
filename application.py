@@ -5,6 +5,7 @@ from flask_jsglue import JSGlue
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 from tempfile import gettempdir
+from flask_sqlalchemy import SQLAlchemy
 
 import heat_map
 from db import datastore
@@ -24,8 +25,12 @@ Session(app)
 UPLOAD_FOLDER = 'data/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-engine = get_db_engine()
+# db
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
+heroku = Heroku(app)
 
 @app.route('/')
 @login_required
