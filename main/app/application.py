@@ -1,5 +1,4 @@
-import os
-from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify
+from flask import Flask, flash, jsonify, request, render_template
 from flask_session import Session
 from flask_jsglue import JSGlue
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -7,7 +6,6 @@ from werkzeug.utils import secure_filename
 from tempfile import gettempdir
 
 import heat_map
-from db import datastore
 from helpers import *
 from parser import Parser
 

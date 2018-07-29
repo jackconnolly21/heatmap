@@ -1,10 +1,10 @@
 import os
 import sqlalchemy
 from datetime import datetime
-from flask import redirect, render_template, request, session, url_for, make_response
+from flask import redirect, session, url_for, make_response
 from functools import wraps, update_wrapper, reduce
 
-from db import datastore
+import datastore
 
 
 def login_required(f):
@@ -41,7 +41,7 @@ def allowed_file(filename):
 
 
 def get_db_engine(pool_pre_ping=True):
-    return sqlalchemy.create_engine('sqlite:///db/heatmap.db')
+    return sqlalchemy.create_engine('sqlite:///heatmap.db')
 
 
 def attacks_to_string(attacks):

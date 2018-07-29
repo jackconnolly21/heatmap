@@ -7,6 +7,7 @@ Jinja2>=2.9.6
 matplotlib>=2.0.2
 Pillow>=4.1
 pygame>=1.9
+psycopg2>2.7
 sql>=0.4.0
 SQLAlchemy>=1.1.9
 Werkzeug>=0.12.2
