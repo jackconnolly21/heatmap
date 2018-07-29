@@ -97,15 +97,15 @@ def upload():
 
     if request.method == 'POST':
         if 'dvwfile' not in request.files:
-            flash('No file given', 'error')
-            return redirect(request.url)
+            flash('No file given', 'danger')
+            return render_template('upload.html')
 
         upload_file = request.files['dvwfile']
         # if user does not select file, browser also
         # submit a empty part without filename
         if upload_file.filename == '':
-            flash('No selected file', 'error')
-            return redirect(request.url)
+            flash('No selected file', 'danger')
+            return render_template('upload.html')
         if upload_file and allowed_file(upload_file.filename):
             filename = secure_filename(upload_file.filename)
             upload_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(session['user_id']))
@@ -194,21 +194,21 @@ def login():
 
         # ensure username was submitted
         if not request.form.get('username'):
-            flash('Must type username!', 'error')
-            return render_template(url_for('login'))
+            flash('Must type username!', 'danger')
+            return render_template('login.html')
 
         # ensure password was submitted
         elif not request.form.get('password'):
-            flash('Must type password!', 'error')
-            return render_template(url_for('login'))
+            flash('Must type password!', 'danger')
+            return render_template('login.html')
 
         # Query database for user
         user = datastore.get_user_by_username(engine, request.form.get('username'))
 
         # ensure username exists and password hash is correct
         if user is None or not check_password_hash(user['hash'], request.form.get('password')):
-            flash('Invalid username/password', 'error')
-            return render_template(url_for('login'))
+            flash('Invalid username/password', 'danger')
+            return render_template('login.html')
 
         session['user_id'] = user['id']
 
@@ -231,20 +231,20 @@ def register():
     if request.method == 'POST':
         # check that username was provided
         if not request.form.get('username'):
-            flash('Must provide username!', 'error')
-            return redirect(url_for('register'))
+            flash('Must provide username!', 'danger')
+            return render_template('register.html')
         # check that name was provided
         elif not request.form.get('firstname') or not request.form.get('lastname'):
-            flash('Must provide full name!', 'error')
-            return redirect(url_for('register'))
+            flash('Must provide full name!', 'danger')
+            return render_template('register.html')
         # check that password was provided twice
         elif not request.form.get('password') or not request.form.get('confirmation'):
-            flash('Must provide password twice!', 'error')
-            return redirect(url_for('register'))
+            flash('Must provide password twice!', 'danger')
+            return render_template('register.html')
         # check that both passwords match
         elif not request.form.get('password') == request.form.get('confirmation'):
-            flash('Passwords don\'t match!', 'error')
-            return redirect(url_for('register'))
+            flash('Passwords don\'t match!', 'danger')
+            return render_template('register.html')
 
         user_dict = {
             'username': request.form.get('username'),
@@ -255,8 +255,8 @@ def register():
         user_id = datastore.insert_user(engine, user_dict)
 
         if not user_id:
-            flash('Username already taken!', 'error')
-            return redirect(url_for('register'))
+            flash('Username already taken!', 'warning')
+            return render_template('register.html')
 
         session['user_id'] = user_id
 
@@ -280,14 +280,14 @@ def password():
 
         # check all boxes filled, old password is correct, new and confirmation match
         if not request.form.get('old') or not check_password_hash(pw_hash, request.form.get('old')):
-            flash('Incorrect old password!', 'error')
-            return redirect(url_for('password'))
+            flash('Incorrect old password!', 'danger')
+            return render_template('password.html')
         elif not request.form.get('new') or not request.form.get('confirmation'):
-            flash('Must confirm new password!', 'error')
-            return redirect(url_for('password'))
+            flash('Must confirm new password!', 'danger')
+            return render_template('password.html')
         elif not request.form.get('new') == request.form.get('confirmation'):
-            flash('New passwords don\'t match!', 'error')
-            return redirect(url_for('password'))
+            flash('New passwords don\'t match!', 'danger')
+            return render_template('password.html')
 
         # update hash in database
         datastore.update_password_hash(engine, session['user_id'], generate_password_hash(request.form.get('new')))

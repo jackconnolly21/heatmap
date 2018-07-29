@@ -42,7 +42,7 @@ def allowed_file(filename):
 
 
 def get_db_engine(pool_pre_ping=True):
-    return sqlalchemy.create_engine('sqlite:///db/heatmap.db', pool_pre_ping=pool_pre_ping)
+    return sqlalchemy.create_engine('sqlite:///db/heatmap.db')
 
 
 def attacks_to_string(attacks):

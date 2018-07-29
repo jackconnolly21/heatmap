@@ -5,6 +5,7 @@ heatmap.html not showing actual image?
 custom attack codes
 make typeahead work
 save inputted info in *register*/login if something goes wrong
+add testing framework and make command to run
 
 done:
 allow download option after generating heatmap
