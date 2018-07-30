@@ -1,5 +1,6 @@
 import os
 import sqlalchemy
+from enum import Enum
 from datetime import datetime
 from flask import redirect, render_template, request, session, url_for, make_response
 from functools import wraps, update_wrapper, reduce
@@ -41,7 +42,11 @@ def allowed_file(filename):
 
 
 def get_db_engine(pool_pre_ping=True):
-    return sqlalchemy.create_engine('postgres://opbwfdtemkxevm:438172d0e189438e14c08e9e03f0c9ba3dc0bce34f062e09b2be18bfea1ddd16@ec2-50-19-86-139.compute-1.amazonaws.com:5432/de1rqe4l2g1tje')
+    # os.environ['DATABASE_URL'] = "postgresql://localhost/heatmap"
+    # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    # SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    return sqlalchemy.create_engine("postgres://opbwfdtemkxevm:438172d0e189438e14c08e9e03f0c9ba3dc0bce34f062e09b2be18bfea1ddd16@ec2-50-19-86-139.compute-1.amazonaws.com:5432/de1rqe4l2g1tje")
 
 
 def attacks_to_string(attacks):
@@ -70,7 +75,7 @@ def generate_caption(team, player, attacks, kills):
     return top_caption, bottom_caption
 
 
-class Color():
+class Color(Enum):
     white = 255, 240, 200
     red = 255, 0, 0
     green = 0, 255, 0
