@@ -5,11 +5,6 @@ from sqlalchemy.sql import and_, or_, select
 from tables import USERS, TEAMS, UPLOADS
 
 
-def test_function(s):
-    print "Hi! It works."
-    return True
-
-
 # General helper functions
 def __insert(engine, table, row_dict):
     return engine.execute(table.insert(), **row_dict).lastrowid
@@ -56,6 +51,10 @@ def get_teams_typeahead(engine, substring, limit=10):
     stmt = text('SELECT * FROM teams WHERE teamname LIKE %s ORDER BY RANDOM() LIMIT 10' % substring)
     teams = engine.execute(stmt).fetchall()
     return [{'vm_num': row['id'], 'name': row['teamname']} for row in teams]
+
+
+def upload_team(engine, row_dict):
+    return __insert(engine, TEAMS, row_dict)
 
 
 # UPLOADS table
