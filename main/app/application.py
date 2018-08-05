@@ -210,6 +210,9 @@ def login():
 
         session['user_id'] = user['id']
 
+        if request.form.get('permanent'):
+            session.permanent = True
+
         # redirect user to index
         flash('Logged in!', 'info')
         return redirect(url_for('index'))
@@ -257,6 +260,9 @@ def register():
             return render_template('register.html')
 
         session['user_id'] = user_id
+
+        if request.form.get('permanent'):
+            session.permanent = True
 
         # redirect to index
         flash('You are registered!', 'info')
