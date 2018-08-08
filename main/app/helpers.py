@@ -41,11 +41,19 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 
+def get_db_url():
+    proc1 = subprocess.Popen(['heroku', 'config', '-a', 'volleyball-heatmap'], stdout=subprocess.PIPE)
+    proc2 = subprocess.Popen(['grep', 'DATABASE_URL'], stdin=proc1.stdout,
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    proc1.stdout.close()
+    out, err = proc2.communicate()
+    return out.split(" ")[-1]
+
+
 def get_db_engine(mode='prod'):
-    # TODO: fix this! (config file for now)
     if mode == 'prod':
-        db_url = 'postgres://opbwfdtemkxevm:438172d0e189438e14c08e9e03f0c9ba3dc0bce34f062e09b2be18bfea1ddd16@ec2-50-19-86-139.compute-1.amazonaws.com:5432/de1rqe4l2g1tje'
-        # db_url = subprocess.check_output('heroku config:get DATABASE_URL -a volleyball-heatmap', shell=True)
+        db_url = get_db_url()
     else:
         db_url = 'sqlite:///heatmap.db'
     return sqlalchemy.create_engine(db_url)
