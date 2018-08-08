@@ -22,14 +22,14 @@ Session(app)
 UPLOAD_FOLDER = 'data/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-engine = get_db_engine()
+mode = 'prod'
+engine = get_db_engine(mode=mode)
 
 
 @app.route('/')
 @login_required
 def index():
     """Landing page for the website, contains form to generate heat map"""
-
     print 'Loading Index'
 
     user_upload_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(session['user_id']))

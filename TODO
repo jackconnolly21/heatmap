@@ -5,9 +5,10 @@ heatmap.html not showing actual image?
 custom attack codes
 make typeahead work
 save inputted info in *register*/login if something goes wrong
-add testing framework and make command to run
 add active class to appropriate navbar item
 convert to bootstrap 4?
+write some tests
+fix non-ORM call in datastore
 
 done:
 allow download option after generating heatmap
@@ -24,3 +25,4 @@ add more print statements in the code to log better
 change double quotes to single
 make a requirements.txt
 different kind of flashed messages?
+add testing framework and make command to run
