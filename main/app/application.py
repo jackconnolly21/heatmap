@@ -33,7 +33,9 @@ def index():
     print 'Loading Index'
 
     user_upload_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(session['user_id']))
-    upload_list = [f for f in os.listdir(user_upload_folder) if f.endswith('.dvw')]
+    upload_list = []
+    if os.path.isdir(user_upload_folder):
+        upload_list = [f for f in os.listdir(user_upload_folder) if f.endswith('.dvw')]
 
     return render_template('index.html', result_dict={'uploads': upload_list})
 
