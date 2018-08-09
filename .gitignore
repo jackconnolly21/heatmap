@@ -4,3 +4,4 @@
 *.idea/*
 *.pyc
 *.pytest_cache
+main/app/static/images/output/
