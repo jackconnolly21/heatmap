@@ -62,7 +62,8 @@ class Parser:
         else:
             return locations
 
-        key += str(player)
+        # pad with a leading zero if single digit number
+        key += "%02d" % player
         key += 'A'
 
         for event in game_info:

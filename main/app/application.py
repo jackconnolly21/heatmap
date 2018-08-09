@@ -58,16 +58,18 @@ def heatmap():
     else:
         attacks = attacks.split(',')
 
-    if request.form.get('kills'):
-        only_kills = True
-    else:
-        only_kills = False
+    only_kills = request.form.get('kills')
 
     files = []
     if data == 'uploads':
         data = 'uploads/%d' % session['user_id']
     folder = 'data/' + data
-    for f in os.listdir(os.getcwd() + '/' + folder):
+
+    data_path = os.path.join(os.getcwd(), folder)
+    if not os.path.isdir(data_path):
+        os.makedirs(data_path)
+
+    for f in os.listdir(data_path):
         if f.endswith('.dvw'):
             files.append(folder + '/' + f)
 
@@ -86,7 +88,7 @@ def heatmap():
         'width': output_dict['width'],
         'height': output_dict['height'],
     }
-
+    print locations
     print 'Rendering finished image', output_url
     return render_template('heatmap.html', result_dict=result_dict)
 
