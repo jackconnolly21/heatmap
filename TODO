@@ -1,25 +1,28 @@
 Make Heatmap Functionality better:
---> Marty - play with heatmap options
---> Marty - line/heatmap option
---> heatmap.html not showing actual image? (I think this might be fine)
+--> Marty - play with heatmap options (figure out how the package works better)
+--> Marty - line/heatmap option (heatmap package being imported weirdly, currently disabled)
+--> heatmap.html not showing actual image? (I think this might be fine now)
 
 Form Options:
---> option to do multiple uploads at a time?
---> custom attack codes
---> save inputted info in *register*/login if something goes wrong
+--> option to do multiple uploads at a time
+      (modify current upload page, click button to allow selection of another file,
+      somehow allow a whole folder maybe?)
+--> custom attack codes (add to db on user specific basis, map to current code)
+--> save inputted info in *register*/login if something goes wrong (not super important)
 
 Make Typeahead Work:
---> get javascript in index.html included
+--> get javascript in index.html included (not finding js/possibly just alert function not working)
 
 Style Issues:
---> add active class to appropriate navbar item
---> convert to bootstrap 4?
+--> adding active class in a better way (bootstrap 4?)/ different style (currently adding w/ js on each page)
+--> convert to bootstrap 4? (currently messes a bunch of stuff up, probably not necessary)
 
 Testing:
---> write some tests
+--> write some tests (use testdata, make some heatmaps, unit test parser and heatmap)
 
 Database:
---> fix db url issue
+--> Marty - fix db url issue (use heroku CLI to fetch db URL)
+--> try to move db code into db/ folder (not super important, just organization)
 
 DONE:
 allow download option after generating heatmap
@@ -38,3 +41,4 @@ make a requirements.txt
 different kind of flashed messages?
 add testing framework and make command to run
 fix non-ORM call in datastore
+add active classes to nav items

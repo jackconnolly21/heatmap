@@ -74,7 +74,8 @@ def heatmap():
     locations = []
     for file_name in files:
         parser = Parser(file_name)
-        locations = parser.get_attack_info(team, player, attacks, locations, only_kills)
+        new_locations = parser.get_attack_info(team, player, attacks, only_kills=only_kills)
+        locations.extend(new_locations)
 
     top_caption, bottom_caption = generate_caption(team, player, attacks, only_kills)
     output_url = generate_output_filename(team, player, attacks, only_kills, session['user_id'])
@@ -86,7 +87,7 @@ def heatmap():
         'height': output_dict['height'],
     }
 
-    print 'Rendering finished image'
+    print 'Rendering finished image', output_url
     return render_template('heatmap.html', result_dict=result_dict)
 
 

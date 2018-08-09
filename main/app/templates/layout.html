@@ -8,9 +8,6 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/journal/bootstrap.min.css" rel="stylesheet"/>
         <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 
-        <!-- app's own CSS -->
-        <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet"/>
-
         <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta -->
         <meta charset="utf-8"/>
         <meta content="initial-scale=1, width=device-width" name="viewport"/>
@@ -31,6 +28,11 @@
         <script src="https://cdn.rawgit.com/corejavascript/typeahead.js/master/dist/typeahead.jquery.js"></script>
 
         {{ JSGlue.include() }}
+
+        <!-- app's own CSS -->
+        <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet"/>
+
+        <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 
         <title>Volleymetrics HeatMaps: {% block title %}{% endblock %}</title>
 
@@ -53,14 +55,17 @@
                     </div>
                     <div class="collapse navbar-collapse" id="navbar">
                         {% if session.user_id %}
+                            <ul class="nav navbar-nav navbar-left">
+                                <li id='index_nav'><a href="{{ url_for('index') }}">Make Heatmap</a></li>
+                            </ul>
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="{{ url_for('info') }}">Team Info</a></li>
-                                <li><a href="{{ url_for('combos') }}">Default Combos</a></li>
-                                <li><a href="{{ url_for('upload') }}">Upload Files</a></li>
+                                <li id='info_nav'><a href="{{ url_for('info') }}">Team Info</a></li>
+                                <li id='combos_nav'><a href="{{ url_for('combos') }}">Default Combos</a></li>
+                                <li id='upload_nav'><a href="{{ url_for('upload') }}">Upload Files</a></li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{{ url_for('password') }}">Change Password</a></li>
+                                        <li id='password_nav'><a href="{{ url_for('password') }}">Change Password</a></li>
                                         <li role="separator" class="divider"></li>
                                         <li><a href="{{ url_for('logout') }}">Logout</a></li>
                                     </ul>
@@ -68,8 +73,8 @@
                             </ul>
                         {% else %}
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="{{ url_for('register') }}">Register</a></li>
-                                <li><a href="{{ url_for('logout') }}">Log In</a></li>
+                                <li id='register_nav'><a href="{{ url_for('register') }}">Register</a></li>
+                                <li id='login_nav'><a href="{{ url_for('logout') }}">Log In</a></li>
                             </ul>
                         {% endif %}
                     </div>

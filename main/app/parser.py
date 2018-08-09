@@ -9,8 +9,7 @@ class Parser:
         self.home_roster = self.read_roster(self.file_sections['[3PLAYERS-H]'])
         self.away_roster = self.read_roster(self.file_sections['[3PLAYERS-V]'])
 
-    @staticmethod
-    def read_file(filename):
+    def read_file(self, filename):
         file_sections = {}
         with open(filename, 'rb') as dvwfile:
             reader = csv.reader(dvwfile, delimiter=';', quotechar='|')
@@ -30,10 +29,9 @@ class Parser:
         teams = self.file_sections['[3TEAMS]']
         home_team = (teams[0][0], teams[0][1])
         away_team = (teams[1][0], teams[1][1])
-        return (home_team, away_team)
+        return home_team, away_team
 
-    @staticmethod
-    def read_roster(roster_info):
+    def read_roster(self, roster_info):
         roster = {}
         for player in roster_info:
             number = int(player[1])
@@ -53,8 +51,8 @@ class Parser:
             combo_list[code] = (name, location)
         return combo_list
 
-    def get_attack_info(self, team, player, attacks, locations, only_kills=False):
-
+    def get_attack_info(self, team, player, attacks, only_kills=False):
+        locations = []
         game_info = self.file_sections['[3SCOUT]']
 
         if str(team) == self.home_team[0]:
@@ -62,7 +60,7 @@ class Parser:
         elif str(team) == self.away_team[0]:
             key = 'a'
         else:
-            return list
+            return locations
 
         key += str(player)
         key += 'A'
@@ -75,8 +73,8 @@ class Parser:
                     end = event[6]
                     rating = info[5]
                     if not only_kills or rating == '#':
-                        arc = ((100 - int(start[2:]), int(start[:2])), (100 - int(end[2:]), int(end[:2])))
-                        locations.append((arc, rating))
+                        arc = (100 - int(start[2:]), int(start[:2]), 100 - int(end[2:]), int(end[:2]))
+                        locations.append( {'arc': arc, 'rating': rating} )
 
         return locations
 

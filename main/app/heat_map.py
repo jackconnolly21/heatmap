@@ -1,12 +1,12 @@
 import os
 import sys
 import pygame
+# import heatmap as hm
 from pygame.locals import *
 from PIL import Image, ImageDraw, ImageFont
 from optparse import OptionParser
 
 from parser import Parser
-# import heatmap as hm
 from helpers import Color
 
 
@@ -27,11 +27,10 @@ def draw_arcs(locations, x_scale=4, y_scale=8):
     pygame.draw.line(screen, Color.white, (10 * x_scale, 50 * y_scale), (90 * x_scale, 50 * y_scale), 7)
 
     for location in locations:
-        start_x, start_y = location[0][0]
-        end_x, end_y = location[0][1]
+        start_x, start_y, end_x, end_y = location['arc']
         start = (start_x * x_scale, start_y * y_scale)
         end = (end_x * x_scale, end_y * y_scale)
-        color = color_by_rating(location[1])
+        color = color_by_rating(location['rating'])
         pygame.draw.line(screen, color, start, end)
         pygame.draw.circle(screen, color, end, 3)
 
@@ -56,7 +55,7 @@ def draw_arcs(locations, x_scale=4, y_scale=8):
 # def draw_heat_map(locations, x_scale=4, y_scale=8):
 #     ends = []
 #     for location in locations:
-#         end_x, end_y = location[0][1]
+#         start_x, start_y, end_x, end_y = location['arc']
 #         end = (end_x * x_scale, end_y * y_scale)
 #         ends.append(end)
 #     h = hm.Heatmap()
@@ -70,11 +69,10 @@ def draw_arcs_pillow(locations, output_url, top_caption=None, bottom_caption=Non
     draw = ImageDraw.Draw(im)
     radius = 3
     for location in locations:
-        start_x, start_y = location[0][0]
-        end_x, end_y = location[0][1]
+        start_x, start_y, end_x, end_y = location['arc']
         start = (start_x * x_scale, start_y * y_scale)
         end = (end_x * x_scale, end_y * y_scale)
-        color = color_by_rating(location[1])
+        color = color_by_rating(location['rating'])
         draw.line([start, end], fill=color, width=3)
         draw.ellipse([end[0] - radius, end[1] - radius, end[0] + radius, end[1] + radius], fill=color, outline=color)
 

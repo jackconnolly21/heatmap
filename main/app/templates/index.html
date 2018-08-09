@@ -6,10 +6,17 @@
 
 {% block main %}
 
-    <script type="text/javascript" src="/static/script.js"></script>
-    <div>
+    <!--This isn't finding the Javascript for some reason (I think)-->
+    <!-- Need the js for typeahead to (possibly) work -->
+    <!-- <script type="text/javascript" src="../static/script.js"></script> -->
+    <!-- <div>
       {{ url_for('static', filename='scripts.js') }}
-    </div>
+    </div> -->
+    
+    <script>
+        var d = document.getElementById("index_nav");
+        d.className += " active";
+    </script>
 
     <div>
       <h1 align="center">Create HeatMap</h1>
