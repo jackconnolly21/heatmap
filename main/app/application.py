@@ -33,7 +33,8 @@ def index():
     print 'Loading Index'
 
     user_upload_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(session['user_id']))
-    upload_list = []
+
+    upload_list = 'No Uploads'
     if os.path.isdir(user_upload_folder):
         upload_list = [f for f in os.listdir(user_upload_folder) if f.endswith('.dvw')]
 
@@ -131,9 +132,9 @@ def teams():
     """Route to use in typeahead"""
     print 'Getting Teams'
 
-    substring = '%' + request.args.get('t') + '%'
+    substring = "%" + request.args.get('t') + "%"
 
-    team_list = datastore.get_teams_typeahead(engine, substring, limit=10)
+    team_list = datastore.get_teams_typeahead(engine, substring, max_teams=10)
 
     print 'Teams:', team_list
     return jsonify(team_list)

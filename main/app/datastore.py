@@ -1,5 +1,5 @@
 import sqlalchemy
-from sqlalchemy import text, update
+from sqlalchemy import text, update, func
 from sqlalchemy.sql import and_, or_, select
 
 from tables import USERS, TEAMS, UPLOADS
@@ -56,11 +56,13 @@ def get_all_teams(engine):
     return __select_all_from_table(engine, TEAMS, order=True)
 
 
-def get_teams_typeahead(engine, substring, limit=10):
+def get_teams_typeahead(engine, substring, max_teams=None):
     # TODO: Make this ORM, add limit?
-    stmt = text('SELECT * FROM teams WHERE teamname LIKE %s ORDER BY RANDOM() LIMIT 10' % substring)
-    teams = engine.execute(stmt).fetchall()
-    return [{'vm_num': row['id'], 'name': row['teamname']} for row in teams]
+    stmt = TEAMS.select()
+    stmt = stmt.where(TEAMS.c.teamname.ilike(substring))
+    if max_teams is not None:
+        stmt = stmt.limit(max_teams).order_by(func.random())
+    return [dict(row) for row in engine.execute(stmt).fetchall()]
 
 
 def upload_team(engine, row_dict):

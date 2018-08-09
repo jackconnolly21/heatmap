@@ -6,7 +6,10 @@
 
 {% block main %}
 
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script type="text/javascript" src="/static/script.js"></script>
+    <div>
+      {{ url_for('static', filename='scripts.js') }}
+    </div>
 
     <div>
       <h1 align="center">Create HeatMap</h1>

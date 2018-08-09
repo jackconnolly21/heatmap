@@ -1,16 +1,27 @@
-option to do multiple uploads at a time?
-Marty - play with heatmap options
-Marty - line/heatmap option
-heatmap.html not showing actual image?
-custom attack codes
-make typeahead work
-save inputted info in *register*/login if something goes wrong
-add active class to appropriate navbar item
-convert to bootstrap 4?
-write some tests
-fix non-ORM call in datastore
+Make Heatmap Functionality better:
+--> Marty - play with heatmap options
+--> Marty - line/heatmap option
+--> heatmap.html not showing actual image? (I think this might be fine)
 
-done:
+Form Options:
+--> option to do multiple uploads at a time?
+--> custom attack codes
+--> save inputted info in *register*/login if something goes wrong
+
+Make Typeahead Work:
+--> get javascript in index.html included
+
+Style Issues:
+--> add active class to appropriate navbar item
+--> convert to bootstrap 4?
+
+Testing:
+--> write some tests
+
+Database:
+--> fix db url issue
+
+DONE:
 allow download option after generating heatmap
 add captions
 refactor database stuff
@@ -26,3 +37,4 @@ change double quotes to single
 make a requirements.txt
 different kind of flashed messages?
 add testing framework and make command to run
+fix non-ORM call in datastore
