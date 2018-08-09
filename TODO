@@ -2,6 +2,7 @@ Make Heatmap Functionality better:
 --> Marty - play with heatmap options (figure out how the package works better)
 --> Marty - line/heatmap option (heatmap package being imported weirdly, currently disabled)
 --> heatmap.html not showing actual image? (I think this might be fine now)
+--> Move output folder to 'data' folder (currently in static, doesn't make sense)
 
 Form Options:
 --> option to do multiple uploads at a time
