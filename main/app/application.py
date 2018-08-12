@@ -34,7 +34,7 @@ def index():
 
     user_upload_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(session['user_id']))
 
-    upload_list = 'No Uploads'
+    upload_list = ['No Uploads']
     if os.path.isdir(user_upload_folder):
         upload_list = [f for f in os.listdir(user_upload_folder) if f.endswith('.dvw')]
 
