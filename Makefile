@@ -1,7 +1,11 @@
 # Run App
-app.run:
+app.run.dev:
 	@echo $(PYTHONPATH)
-	cd main/app/ && gunicorn -w 3 -t 600 -b 0.0.0.0:8080 wsgi_application:app
+	cd main/app/ && gunicorn -w 3 -t 600 -b 0.0.0.0:8080 wsgi_dev:app
+
+app.run.prod:
+	@echo $(PYTHONPATH)
+	cd main/app/ && gunicorn -w 3 -t 600 -b 0.0.0.0:8080 wsgi_prod:app
 
 app.run.flask:
 	@echo $(PYTHONPATH)

@@ -23,6 +23,7 @@ Testing:
 
 Database:
 --> Marty - fix db url issue (use heroku CLI to fetch db URL)
+--> Marty - Make config files that load in the dev/prod setting and use that to fetch correct db url
 --> try to move db code into db/ folder (not super important, just organization)
 
 DONE:
